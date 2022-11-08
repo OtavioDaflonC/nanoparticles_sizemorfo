@@ -14,16 +14,25 @@ from sklearn.preprocessing import LabelEncoder, OneHotEncoder, OrdinalEncoder
 
 
 
+def print_metrics(y_test, y_hat):
+    # accuracy = accuracy_score(y_test, y_hat)
+    # print(f'Accuracy: {accuracy:.2%}')
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 4))
+
+    print(classification_report(y_test, y_hat))
+    ConfusionMatrixDisplay.from_predictions(y_test, y_hat, ax=ax1, cmap='Blues')
+
+    plt.tight_layout()
+    plt.show()
 
 
 # para classificação:
 
 
-
-def one_hot_encoding(X: pd.DataFrame) -> pd.DataFrame:
+def one_hot_encoding(X):   #: pd.DataFrame) -> pd.DataFrame:
 
     ohe = OneHotEncoder(sparse=False)
-    ohe_cols = X.select_dtypes(include='object').columns.tolist() + ['agencia']
+    ohe_cols = X.select_dtypes(include='object').columns.tolist() 
     data_ohe = ohe.fit_transform(X[ohe_cols])
     data_ohe = pd.DataFrame(data_ohe, columns=ohe.get_feature_names_out(), dtype=int)
 
